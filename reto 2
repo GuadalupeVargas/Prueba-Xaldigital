@@ -1,0 +1,133 @@
+create database vuelos;
+\c vuelos
+
+create table aerolinea(id_aerolinea int not null, nombre_aerolinea varchar (20),primary key (id_aerolinea));
+create table aeropuertos(id_aeropuerto int not null, nombre_aeropuerto varchar (25),primary key (id_aeropuerto));
+create table movimientos(id_movimiento int not null, descripcion varchar (20),primary key (id_movimiento));
+create table vuelos(id_aerolinea int not null,id_aeropuerto int not null,id_movimiento int not null, dia date);
+
+
+alter table vuelos add foreign key (id_aerolinea) references aerolinea(id_aerolinea);
+alter table vuelos add foreign key (id_aeropuerto) references aeropuertos(id_aeropuerto);
+alter table vuelos add foreign key (id_movimiento) references movimientos(id_movimiento);
+
+insert into aerolinea values(1,'volaris');
+insert into aerolinea values(2,'aeromar');
+insert into aerolinea values(3,'interjet');
+insert into aerolinea values(4,'aeromexico');
+
+insert into aeropuertos values(1,'Benito juajez');
+insert into aeropuertos values(2,'guanajuato');
+insert into aeropuertos values(3,'La paz');
+insert into aeropuertos values(4,'oaxaca');
+
+insert into movimientos values(1,'salida');
+insert into movimientos values(2,'entrada');
+
+insert into vuelos values(1,1,1,'2021-05-02');
+insert into vuelos values(2,1,1,'2021-05-02');
+insert into vuelos values(3,2,2,'2021-05-02');
+insert into vuelos values(4,3,2,'2021-05-02');
+insert into vuelos values(1,3,2,'2021-05-02');
+insert into vuelos values(2,1,1,'2021-05-02');
+insert into vuelos values(2,3,1,'2021-05-04');
+insert into vuelos values(3,4,1,'2021-05-04');
+insert into vuelos values(3,4,1,'2021-05-04');
+
+
+
+
+select *from aeropuertos;
+select *from movimientos;
+select *from vuelos;
+select *from aerolinea;
+
+---------------------------------------------------------------
+-------- 1. ¿Cuál es el nombre aeropuerto que ha tenido mayor movimiento durante el año?
+ select *
+ from
+ (
+  SELECT id_aeropuerto, COUNT(id_aeropuerto) maximo
+    FROM vuelos  GROUP BY id_aeropuerto 
+    HAVING COUNT (id_aeropuerto)=( 
+    SELECT MAX(maximo) 
+    FROM ( 
+    SELECT id_aeropuerto, COUNT(id_aeropuerto) maximo 
+    FROM vuelos 
+    GROUP BY id_aeropuerto)a)
+ ) a 
+ inner join 
+ (
+  select nombre_aeropuerto , id_aeropuerto 
+ from aeropuertos 
+ ) b  on a.id_aeropuerto=b.id_aeropuerto;
+
+
+
+
+---------------------------------------------------------------
+-------- 2. ¿Cuál es el nombre aerolínea que ha realizado mayor número de vuelos durante el año?
+
+ select *
+ from
+ (
+ SELECT id_aerolinea, COUNT(id_aerolinea) maximo
+    FROM vuelos  GROUP BY id_aerolinea 
+    HAVING COUNT (id_aerolinea)=( 
+    SELECT MAX(maximo) 
+    FROM ( 
+    SELECT id_aerolinea, COUNT(id_aerolinea) maximo 
+    FROM vuelos 
+    GROUP BY id_aerolinea)a)
+ ) a 
+ inner join 
+ (
+  select nombre_aerolinea , id_aerolinea 
+ from aerolinea
+ ) b  on a.id_aerolinea=b.id_aerolinea;
+
+
+
+
+---------------------------------------------------------------
+-------- 3. ¿En qué día se han tenido mayor número de vuelos?
+
+SELECT dia, COUNT(dia) maximo
+    FROM vuelos  GROUP BY dia 
+    HAVING COUNT (dia)=( 
+    SELECT MAX(maximo) 
+    FROM ( 
+    SELECT dia, COUNT(dia) maximo 
+    FROM vuelos 
+    GROUP BY dia)a);
+
+
+
+
+
+---------------------------------------------------------------
+-------- 4. ¿Cuáles son las aerolíneas que tienen mas de 2 vuelos por día?
+
+
+
+select aerolinea.nombre_aerolinea  from vuelos
+natural join aerolinea group by nombre_aerolinea, dia
+having count(*) > 2;
+
+----------------------------------------------------------
+
+Se requiere saber lo siguiente
+1. ¿Cuál es el nombre aeropuerto que ha tenido mayor movimiento durante el año?
+
+Benito juajez y   La paz 
+
+2. ¿Cuál es el nombre aerolínea que ha realizado mayor número de vuelos durante el año?
+aeromar     y interjet         
+
+3. ¿En qué día se han tenido mayor número de vuelos?
+
+ 2021-05-02
+ 
+4. ¿Cuáles son las aerolíneas que tienen mas de 2 vuelos por día?
+
+niinguna de las aerolineas tiene mas de 2 vuelos por dia
