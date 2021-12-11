@@ -44,3 +44,27 @@ actual = df["creation_date"].max()
 
 reputacion = df["owner.reputation"].max()
 reputacion
+
+-------------------------------------------------
+
+
+2. Obtener el número de respuestas contestadas y no contestadas
+
+respuestas contestadas: 14
+respuestas no contestadas: 16
+
+3. Obtener la respuesta con menor número de vistas
+
+11
+
+tags	is_answered	view_count	accepted_answer_id	answer_count	score	last_activity_date	creation_date	last_edit_date	question_id	content_license	link	title	owner.reputation	owner.user_id	owner.user_type	owner.profile_image	owner.display_name	owner.link	owner.accept_rate	closed_date	closed_reason
+1	[regex, apache, perl, cookies]	False	11	NaN	0	0	1639178863	1639178863	NaN	70311409	CC BY-SA 4.0	https://stackoverflow.com/questions/70311409/c...	Checking cookie expiration date server side in...	17	17019554	registered	https://www.gravatar.com/avatar/2a826d6f085eb7...	cr4nk	https://stackoverflow.com/users/17019554/cr4nk	NaN	NaN	NaN
+
+
+4. Obtener la respuesta más vieja y más actual
+respuesta mas vieja: 1257085549
+respuestas mas actual: 1639178863
+
+5. Obtener la respuesta del owner que tenga una mayor reputación
+
+5517
