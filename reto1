@@ -1,0 +1,46 @@
+
+import requests 
+import missingno as msno
+import pandas as pd
+
+##### 1.carga de archivo 
+
+url = "https://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle=perl&site=stackoverflow"
+
+req = requests.get(url)
+obj_json =req.json()
+
+df = pd.json_normalize(obj_json['items'])
+df
+
+#####  2.Obtener el número de respuestas contestadas y no contestadas 
+
+## muestra el total de respuestas
+cont_total = df["is_answered"].count()
+
+## muestra las respuestas contestadas :  True
+contes = df[df["is_answered"]== True]["is_answered"].sum()
+contes
+no_contes = cont_total - contes
+no_contes
+#print("respuestas contestadas:", contes)
+#print("respuestas no contestadas:", no_contes)
+
+### 3.Obtener la respuesta con menor número de vistas
+
+vista = df[ df ["view_count"] == df[ "view_count"].min()]
+vista
+
+### 4. Obtener la respuesta más vieja y más actual
+
+vieja = df["creation_date"].min()
+
+actual = df["creation_date"].max()
+#print("respuesta mas vieja:", vieja)
+#print("respuestas mas actual:", actual)
+
+### 5. Obtener la respuesta del owner que tenga una mayor reputación
+
+
+reputacion = df["owner.reputation"].max()
+reputacion
